@@ -11,28 +11,45 @@ class GenreModelTest(TestCase):
 
     def test_genre_string_representation(self):
         """Test that a genre displays its friendly name."""
-
+        # Arrange: Create a genre instance with a name and friendly name.
         genre = Genre.objects.create(
             name='deep-house',
             friendly_name='Deep House'
         )
-
+        # Act: Convert the genre instance to a string.
+        # Assert: that the string representation matches the friendly name.
         self.assertEqual(str(genre), 'Deep House')
 
     def test_genre_name_must_be_unique(self):
         """Test that two genres cannot have the same name."""
-        # In this test case, the two genres have different friendly_name
-        # values. This shows that the uniqueness constraint applies only to
-        # name but not to friendly_name.
+        # Arrange: Create the first genre with a unique name.
         Genre.objects.create(
             name='techno',
             friendly_name='Techno'
         )
 
+        # Act & Assert: Attempt to create a second genre with the same name
+        # should raise an IntegrityError.
         with self.assertRaises(IntegrityError):
             Genre.objects.create(
                 name='techno',
                 friendly_name='Techno Music'
+            )
+
+    def test_genre_friendly_name_must_be_unique(self):
+        """Test that two genres cannot have the same friendly name."""
+        # Arrange: Create the first genre with a unique friendly name.
+        Genre.objects.create(
+            name='deep-house',
+            friendly_name='Deep House'
+        )
+
+        # Act & Assert: Attempt to create a second genre with the same
+        # friendly name should raise an IntegrityError.
+        with self.assertRaises(IntegrityError):
+            Genre.objects.create(
+                name='deep-house-2',
+                friendly_name='Deep House'
             )
 #-----------------------------------------------------------------------------
 # RECORD MODEL TESTS
